@@ -1,20 +1,48 @@
 <div class="container">
     <h1 class="mt-3"><?= $data['judul'] ?></h1>
 
+    <!--  Flash massage  -->
     <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6">
+            <?= Flaser::flash() ?>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-lg-6">
             <h3><?= $data['judul'] ?></h3>
+
+
             <!-- Button trigger modal -->
             <div class="d-flex flex-row-reverse mb-2">
-                <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#formModal">
+                <button type="button" class="btn btn-primary tampilModalTambah" data-toggle="modal" data-target="#formModal">
                     Tambah Data Mahasiswa
                 </button>
             </div>
+
+            <div class="row mb-2 col-7">
+                <form action="<?= BASEURL ?>/mahasiswa/search" method="post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="keywordSearch" id="keywordSearch" autocomplete="off">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="tombolSearch">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+
             <ul class="list-group">
                 <?php foreach ($data['mhs'] as $mhs) :   ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li class="list-group-item ">
                         <?= $mhs['nama']; ?>
-                        <a href="<?= BASEURL ?>/mahasiswa/detail/<?= $mhs['id'] ?>" class="badge badge-primary">Detail</a>
+                        <a href="<?= BASEURL ?>/mahasiswa/delete/<?= $mhs['id'] ?>" class="badge badge-danger float-right ml-2" onclick="return confirm('yakin?')">Delete</a>
+                        <a href="<?= BASEURL ?>/mahasiswa/update/<?= $mhs['id'] ?>" class="badge badge-success float-right ml-2 tampilModalUbah" data-toggle="modal" data-target="#formModal" data-id="<?= $mhs['id'] ?>">Update</a>
+                        <a href="<?= BASEURL ?>/mahasiswa/detail/<?= $mhs['id'] ?>" class="badge badge-primary float-right ">Detail</a>
+
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -25,8 +53,8 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="judulModal" aria-hidden="true">
+<!-- Modal Tambah -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,7 +63,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= BASEURL ?>/mahasiswa/tambah" method="post">
+            <form action="<?= BASEURL ?>/mahasiswa/tambah" method="post" class="rubahAction">
+                <input type="hidden" name="id" id="id">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nama">Nama</label>
@@ -52,7 +81,7 @@
                     <div class="form-group">
                         <label for="jurusan">Jurusan</label>
                         <select class="form-control" id="jurusan" name="jurusan">
-                            <option>--Pilih Jurusan--</option>
+                            <option value="">--Pilih Jurusan--</option>
                             <option value="Teknik Informatika">Teknik Informatika</option>
                             <option value="Teknik Industri">Teknik Industri</option>
                             <option value="Teknik Pangan">Teknik Pangan</option>
