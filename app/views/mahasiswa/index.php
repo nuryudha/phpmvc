@@ -9,6 +9,7 @@
     </div>
 
 
+
     <div class="row mb-3">
         <div class="col-lg-6">
             <h3><?= $data['judul'] ?></h3>
@@ -39,7 +40,10 @@
                 <?php foreach ($data['mhs'] as $mhs) :   ?>
                     <li class="list-group-item ">
                         <?= $mhs['nama']; ?>
-                        <a href="<?= BASEURL ?>/mahasiswa/delete/<?= $mhs['id'] ?>" class="badge badge-danger float-right ml-2" onclick="return confirm('yakin?')">Delete</a>
+
+
+                        <a href="<?= BASEURL ?>/mahasiswa/delete/<?= $mhs['id'] ?>" class="badge badge-danger float-right ml-2 delete-link" data-id="<?= $mhs['id'] ?>">Delete</a>
+
                         <a href="<?= BASEURL ?>/mahasiswa/update/<?= $mhs['id'] ?>" class="badge badge-success float-right ml-2 tampilModalUbah" data-toggle="modal" data-target="#formModal" data-id="<?= $mhs['id'] ?>">Update</a>
                         <a href="<?= BASEURL ?>/mahasiswa/detail/<?= $mhs['id'] ?>" class="badge badge-primary float-right ">Detail</a>
 
@@ -97,3 +101,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.delete-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const id = this.getAttribute('data-id');
+
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin menghapus data ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect ke halaman delete dengan id yang sesuai
+                    window.location.href = `<?= BASEURL ?>/mahasiswa/delete/${id}`;
+                }
+            });
+        });
+    });
+</script>
